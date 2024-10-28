@@ -26,6 +26,7 @@ const row1Scalefactor = 0.275
 function HomeScreen(props) {
   // State to track if fonts are loaded
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [locationLoaded, setLocationLoaded] = useState(false)
 
   // Location states
   const [longitude, setLongitude] = useState(null);
@@ -39,6 +40,9 @@ function HomeScreen(props) {
   // Date and time hooks
   const [currentDate, setCurrentDate] = useState('');
   const [currentTime, setCurrentTime] = useState('');
+
+  // Current Weather
+  const [currentTemp, setCurrentTemp] = useState('')
 
   // Request permission to access location
   const requestLocationPermission = async () => {
@@ -105,18 +109,30 @@ function HomeScreen(props) {
     if (!response.ok){
         throw new Error('Network issue');
     }
-    const data = await response.json(); 
-    // console.log(data)
-    
-    const datas = Math.ceil(data.current.temperature_2m)
-    console.log(datas)
-
     // Get the current temperature
-    
+    const data = await response.json();    
+    const currentTemp = Math.ceil(data.current.temperature_2m)
+    setCurrentTemp(currentTemp)    
   }
 
-
-//   getWeatherData(latitude, longitude)
+  useEffect(() => {
+    // Ensure we pass latitude and longitude to getWeatherData on each interval
+    const fetchData = () => {
+      if (latitude && longitude) {
+        getWeatherData(latitude, longitude);
+      }
+    };
+  
+    // Fetch weather data immediately when component mounts
+    fetchData();
+  
+    // Set up interval to update the weather data every 10 seconds
+    const updateInterval = setInterval(fetchData, 300000);
+  
+    // Clear the interval when the component unmounts
+    return () => clearInterval(updateInterval);
+  }, [latitude, longitude]); // Add latitude and longitude as dependencies 
+ 
   useEffect(() => {
     getDayTime();
     const intervalId = setInterval(getDayTime, 1000); // Update every second
@@ -134,6 +150,7 @@ function HomeScreen(props) {
   useEffect(() => {
     if (longitude && latitude) {
       getLocation(latitude, longitude);
+      setLocationLoaded(true)
     }
   }, [longitude, latitude]);
 
@@ -154,7 +171,7 @@ function HomeScreen(props) {
   const onPress = (key) => { console.log(`Pressed here ${key}`); };
 
   // Show a loading spinner until the fonts are loaded
-  if (!fontsLoaded) {
+  if (!locationLoaded && !fontsLoaded) {
     return <ActivityIndicator size="large" />;
   }
 
@@ -192,7 +209,17 @@ function HomeScreen(props) {
 
           {/* Temperature Box */}
           <View style={styles.mainContentRow1}>
-
+            {/* Current Weather & Icon View */}
+            <View style={styles.currentWeather}>
+                <Text style = {styles.currentWeatherTemp}> {currentTemp}</Text>
+                <Image source={require('../assets/media/weather_icons/Clear.png')} style= {styles.weatherState}></Image>
+            </View>
+            <View style={styles.currentWeather}>
+                <Text style = {styles.currentWeatherTemp}> {currentTemp}</Text>
+            </View>
+            <View style={styles.currentWeather}>
+                <Text style = {styles.currentWeatherTemp}> {currentTemp}</Text>
+            </View>
           </View>
 
           {/* Spotify Box */}
@@ -250,7 +277,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(240, 240, 240, 0.5)",
     height: height * row1Scalefactor + 10, // Later change this using scaling factor
     marginRight: "3%", 
-    borderRadius: 10,
+    borderRadius: 20,
     padding: 10,
     alignItems: 'center',
     width: width * row1Scalefactor,
@@ -270,6 +297,19 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: '8%'
   },
+  currentWeather:{
+    flexDirection: 'row',
+    height: '50%'
+  },
+  weatherState:{
+    width: '30%',
+    height: '30%',
+    aspectRatio: 1,
+    right: 0
+  },
+  currentWeatherTemp:{
+    fontFamily: 'Crimson-Regular',
+  }
 });
 
 export default HomeScreen;
