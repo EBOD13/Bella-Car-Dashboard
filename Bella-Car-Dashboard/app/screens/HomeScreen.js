@@ -200,32 +200,85 @@ function HomeScreen(props) {
 
         {/* Side View - Next to Nav Panel*/}
         <SafeAreaView style={styles.mainContent}>
-            {/* Date, Location and Time Box */}
+
+{/* Row 1 */}
           <View style={styles.mainContentRow1}>
+            {/* Date, Location and Time Box */}
+            <View style = {styles.dateTimeBox}>
             <Text style={styles.date}>{currentDate}</Text>
             <Text style={styles.time}>{currentTime}</Text>
             <Text style={styles.location}>{city}, {region}</Text>
           </View>
 
-          {/* Temperature Box */}
-          <View style={styles.mainContentRow1}>
-            {/* Current Weather & Icon View */}
-            <View style={styles.currentWeather}>
-                <Text style = {styles.currentWeatherTemp}> {currentTemp}</Text>
-                <Image source={require('../assets/media/weather_icons/Clear.png')} style= {styles.weatherState}></Image>
-            </View>
-            <View style={styles.currentWeather}>
-                <Text style = {styles.currentWeatherTemp}> {currentTemp}</Text>
-            </View>
-            <View style={styles.currentWeather}>
-                <Text style = {styles.currentWeatherTemp}> {currentTemp}</Text>
-            </View>
-          </View>
-
-          {/* Spotify Box */}
-          <View style={styles.mainContentRow1}>
+          {/*Weather*/}
+          <View style = {styles.dateTimeBox}>
+            {/* Weather Row 1 */}
+          <View style={styles.weatherNow}> 
+            <Text style={styles.weatherText} numberOfLines={1} ellipsizeMode="tail"> {currentTemp} </Text>
+            <Image source={require('../assets/media/weather_icons/Clear.png')} style= {styles.weatherState}></Image>
 
           </View>
+
+            {/* Weather Row 2 */}
+            <View style= {styles.dailyForecast}> 
+              <Text>DAILY FORECAST</Text>
+              <Text> L: 35°  H: 40°</Text>
+            </View>
+
+            {/* Weather Row 3 */}
+            
+            <View> 
+              <Text>DAILY FORECAST</Text>
+              <Text> L: 35°  H: 40°</Text>
+            </View>
+
+          </View>
+
+          <View style = {styles.dateTimeBox}>
+            <Text style={styles.date}>{currentDate}</Text>
+            <Text style={styles.time}>{currentTime}</Text>
+            <Text style={styles.location}>{city}, {region}</Text>
+          </View>
+          </View> 
+{/* Row 2 */}
+          <View style={styles.mainContentRow2}>
+            <View style = {styles.dateTimeBox}>
+            <Text style={styles.date}>{currentDate}</Text>
+            <Text style={styles.time}>{currentTime}</Text>
+            <Text style={styles.location}>{city}, {region}</Text>
+          </View>
+          <View style = {styles.dateTimeBox}>
+            <Text style={styles.date}>{currentDate}</Text>
+            <Text style={styles.time}>{currentTime}</Text>
+            <Text style={styles.location}>{city}, {region}</Text>
+          </View>
+
+          <View style = {styles.dateTimeBox}>
+            <Text style={styles.date}>{currentDate}</Text>
+            <Text style={styles.time}>{currentTime}</Text>
+            <Text style={styles.location}>{city}, {region}</Text>
+          </View>
+          </View> 
+{/* Row 3 */}
+          <View style={styles.mainContentRow3}>
+            {/* Date, Location and Time Box */}
+            <View style = {styles.dateTimeBox}>
+            <Text style={styles.date}>{currentDate}</Text>
+            <Text style={styles.time}>{currentTime}</Text>
+            <Text style={styles.location}>{city}, {region}</Text>
+          </View>
+          <View style = {styles.dateTimeBox}>
+            <Text style={styles.date}>{currentDate}</Text>
+            <Text style={styles.time}>{currentTime}</Text>
+            <Text style={styles.location}>{city}, {region}</Text>
+          </View>
+
+          <View style = {styles.dateTimeBox}>
+            <Text style={styles.date}>{currentDate}</Text>
+            <Text style={styles.time}>{currentTime}</Text>
+            <Text style={styles.location}>{city}, {region}</Text>
+          </View>
+          </View> 
         </SafeAreaView>
 
         {/* Temperature View */}
@@ -265,30 +318,64 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   mainContent: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: 'column',
     flex: 1,
     width: '100%',
-    height: '100%',
-    marginTop: Constants.statusBarHeight + 100,
+    height: '94%',
+    marginTop: Constants.statusBarHeight + 50,
     marginLeft: "2.5%",
   },
   mainContentRow1: {
-    backgroundColor: "rgba(240, 240, 240, 0.5)",
+    flexDirection: 'row',
+    flex: 1,
+    marginRight: "3%", 
+    alignItems: 'center',
+  },
+  mainContentRow2: {
+    flexDirection: 'row',
+    flex: 1,
+    marginRight: "3%", 
+    alignItems: 'center',
+  },
+  mainContentRow3: {
+    flexDirection: 'row',
+    flex: 1,
+    marginRight: "3%", 
+    alignItems: 'center',
+  },
+  dateTimeBox:{
     height: height * row1Scalefactor + 10, // Later change this using scaling factor
+    width: width * row1Scalefactor,
+    flex: 1,
+    backgroundColor: "rgba(240, 240, 240, 0.5)",
     marginRight: "3%", 
     borderRadius: 20,
     padding: 10,
     alignItems: 'center',
-    width: width * row1Scalefactor,
-    position: 'relative',
+  },
+  dailyForecast:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flex: 1,
+    marginLeft: '2%', 
+    marginRight: '5%',
+    width: '90%',
+    fontFamily: 'Crimson-Regular',
+    height: '5%'
+  },
+  weatherNow: {
+    fontFamily: 'Crimson-Regular',
+    flexDirection: 'row',
+    height: '45%',
+    alignItems: 'center', // Center items vertically
+    paddingHorizontal: 10, // Add horizontal padding if needed
   },
   date: {
     fontSize: width * fontScaleFactor, 
     fontFamily: 'Crimson-Regular'
   },
   time: {
-    fontSize: width * fontScaleFactor + 35,
+    fontSize: width * (fontScaleFactor + 0.018),
     fontFamily: 'Crimson-Bold',
   },
   location: {
@@ -301,11 +388,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: '50%'
   },
-  weatherState:{
-    width: '30%',
-    height: '30%',
+  weatherText: {
+    fontFamily: 'Crimson-Regular',
+    fontSize: 16, // Adjust as needed
+    flexShrink: 1, // Shrinks text if necessary
+  },
+  weatherState: {
+    height: '50%',
     aspectRatio: 1,
-    right: 0
+    resizeMode: 'contain', // Ensures full image fits
   },
   currentWeatherTemp:{
     fontFamily: 'Crimson-Regular',
